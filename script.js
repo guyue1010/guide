@@ -1,4 +1,42 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Language switching functionality
+    const langButtons = document.querySelectorAll('.lang-btn');
+    const langElements = document.querySelectorAll('.lang');
+    
+    // Set initial language
+    let currentLang = localStorage.getItem('preferred-lang') || 'en';
+    updateLanguage(currentLang);
+
+    langButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const lang = button.getAttribute('data-lang');
+            updateLanguage(lang);
+            localStorage.setItem('preferred-lang', lang);
+        });
+    });
+
+    function updateLanguage(lang) {
+        // Update button states
+        langButtons.forEach(button => {
+            if (button.getAttribute('data-lang') === lang) {
+                button.classList.add('active');
+            } else {
+                button.classList.remove('active');
+            }
+        });
+
+        // Update content
+        langElements.forEach(element => {
+            const text = element.getAttribute(`data-${lang}`);
+            if (text) {
+                element.textContent = text;
+            }
+        });
+
+        // Update HTML lang attribute
+        document.documentElement.lang = lang;
+    }
+
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
